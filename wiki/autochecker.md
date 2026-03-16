@@ -8,7 +8,6 @@
 - [Set up the `Autochecker`](#set-up-the-autochecker)
   - [Open the `Autochecker` bot](#open-the-autochecker-bot)
   - [Log in to the `Autochecker` bot](#log-in-to-the-autochecker-bot)
-  - [Set up your VM for the `Autochecker` agent](#set-up-your-vm-for-the-autochecker-agent)
   - [Add the `SSH` public key for the `Autochecker` agent (REMOTE)](#add-the-ssh-public-key-for-the-autochecker-agent-remote)
 - [Check the task using the `Autochecker` bot](#check-the-task-using-the-autochecker-bot)
 
@@ -50,11 +49,6 @@ Open in `Telegram`: <https://t.me/auchebot>.
 
 1. [Open the `Autochecker` bot](#open-the-autochecker-bot)
 2. Log in.
-
-### Set up your VM for the `Autochecker` agent
-
-1. [Connect to your VM](./vm.md#connect-to-the-vm).
-2. [Set up your VM for the `Autochecker` agent](./vm-autochecker.md#set-up-the-vm-for-the-autochecker-agent).
 
 ### Add the `SSH` public key for the `Autochecker` agent (REMOTE)
 
