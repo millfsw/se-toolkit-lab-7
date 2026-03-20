@@ -86,8 +86,8 @@ We refer to your fork as `fork` and to the original repo as `upstream`.
    Open `.env.docker.secret` and set:
 
    ```text
-   AUTOCHECKER_EMAIL=YOUR_EMAIL@innopolis.university
-   AUTOCHECKER_PASSWORD=YOUR_GITHUB_USERNAMEYOUR_TELEGRAM_ALIAS
+   AUTOCHECKER_API_LOGIN=YOUR_EMAIL@innopolis.university
+   AUTOCHECKER_API_PASSWORD=YOUR_GITHUB_USERNAMEYOUR_TELEGRAM_ALIAS
    ```
 
    Replace **`YOUR_EMAIL`**, **`YOUR_GITHUB_USERNAME`**, and **`YOUR_TELEGRAM_ALIAS`** with your actual values. Example: if your GitHub username is `johndoe` and your Telegram alias is `jdoe`, the password is `johndoejdoe`.
