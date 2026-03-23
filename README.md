@@ -95,3 +95,98 @@ By the end of this lab, you should be able to say:
 ### Optional
 
 1. [Flutter Web Chatbot](./lab/tasks/optional/task-1.md)
+
+## Deploy
+
+This section explains how to deploy the Telegram bot alongside the backend using Docker Compose.
+
+### Prerequisites
+
+Before deploying, ensure you have:
+
+1. **VM access** — The bot runs on your deployed VM alongside the backend
+2. **Environment files configured** — `.env.docker.secret` contains all required credentials
+3. **LLM proxy running** — The Qwen Code API proxy must be accessible (typically at `http://localhost:42005`)
+
+### Required Environment Variables
+
+The following variables must be set in `.env.docker.secret`:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `BOT_TOKEN` | Telegram bot token from @BotFather | `123456789:ABCdefGHIjklMNOpqrsTUVwxyz` |
+| `LMS_API_KEY` | Bearer token for backend API | `my-lms-api-key` |
+| `LLM_API_KEY` | API key for LLM service | `secret-qwen-key` |
+| `LLM_API_BASE_URL` | LLM API base URL (uses host.docker.internal) | `http://host.docker.internal:42005/v1` |
+| `LLM_API_MODEL` | Model name for intent routing | `coder-model` |
+| `BACKEND_CONTAINER_PORT` | Backend port inside Docker | `8000` |
+
+### Deploy Commands
+
+**1. Stop the background bot process (if running):**
+
+```bash
+cd ~/se-toolkit-lab-7
+pkill -f "bot.py" 2>/dev/null || true
+```
+
+**2. Start all services with Docker Compose:**
+
+```bash
+docker compose --env-file .env.docker.secret up --build -d
+```
+
+**3. Check service status:**
+
+```bash
+docker compose --env-file .env.docker.secret ps
+```
+
+You should see `bot`, `backend`, `postgres`, `pgadmin`, and `caddy` all running.
+
+**4. View bot logs:**
+
+```bash
+# Last 20 lines
+docker compose --env-file .env.docker.secret logs bot --tail 20
+
+# Follow live logs
+docker compose --env-file .env.docker.secret logs -f bot
+```
+
+**5. Verify backend health:**
+
+```bash
+curl -sf http://localhost:42002/docs
+```
+
+### Verify in Telegram
+
+Once deployed, test the bot in Telegram:
+
+1. **Start the bot:** Send `/start` — should receive welcome message with keyboard buttons
+2. **Health check:** Send `/health` — should show backend status
+3. **Natural language:** Send `"what labs are available?"` — should list all labs
+4. **Multi-step query:** Send `"which lab has the lowest pass rate?"` — should analyze and compare
+
+### Troubleshooting
+
+| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| Bot container restarting | Missing `BOT_TOKEN` | Check `.env.docker.secret` has `BOT_TOKEN=` |
+| `/health` fails | Wrong backend URL | Ensure `LMS_API_BASE_URL=http://backend:8000` (not localhost) |
+| LLM queries fail | Can't reach host | Check `extra_hosts` and `host.docker.internal` in compose |
+| Build fails at `uv sync` | Missing `uv.lock` | Ensure `COPY uv.lock` is in Dockerfile |
+
+### Stop/Restart
+
+```bash
+# Stop all services
+docker compose --env-file .env.docker.secret down
+
+# Restart bot only
+docker compose --env-file .env.docker.secret restart bot
+
+# Rebuild and restart
+docker compose --env-file .env.docker.secret up --build -d bot
+```
