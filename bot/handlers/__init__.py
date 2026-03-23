@@ -13,6 +13,11 @@ from .commands import (
     handle_labs,
     handle_scores,
 )
+from .keyboards import (
+    get_start_keyboard,
+    get_lab_selection_keyboard,
+    get_analytics_keyboard,
+)
 
 __all__ = [
     "handle_start",
@@ -20,4 +25,7 @@ __all__ = [
     "handle_health",
     "handle_labs",
     "handle_scores",
+    "get_start_keyboard",
+    "get_lab_selection_keyboard",
+    "get_analytics_keyboard",
 ]

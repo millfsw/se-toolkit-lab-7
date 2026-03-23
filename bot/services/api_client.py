@@ -50,6 +50,40 @@ class LMSClient:
             response.raise_for_status()
             return response.json()
 
+    def get_learners(self) -> list[dict]:
+        """Fetch all enrolled learners.
+
+        Returns:
+            List of learner dictionaries
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/learners/"
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers())
+            response.raise_for_status()
+            return response.json()
+
+    def get_scores(self, lab: str) -> list[dict]:
+        """Fetch score distribution for a specific lab.
+
+        Args:
+            lab: The lab identifier (e.g., "lab-04")
+
+        Returns:
+            List of score bucket dictionaries
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/analytics/scores"
+        params = {"lab": lab}
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
     def get_pass_rates(self, lab: str) -> list[dict]:
         """Fetch pass rates for a specific lab.
 
@@ -66,6 +100,98 @@ class LMSClient:
         params = {"lab": lab}
         with httpx.Client() as client:
             response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
+    def get_timeline(self, lab: str) -> list[dict]:
+        """Fetch submission timeline for a specific lab.
+
+        Args:
+            lab: The lab identifier (e.g., "lab-04")
+
+        Returns:
+            List of timeline entries (date, submissions)
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/analytics/timeline"
+        params = {"lab": lab}
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
+    def get_groups(self, lab: str) -> list[dict]:
+        """Fetch per-group performance data for a specific lab.
+
+        Args:
+            lab: The lab identifier (e.g., "lab-04")
+
+        Returns:
+            List of group performance dictionaries
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/analytics/groups"
+        params = {"lab": lab}
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
+    def get_top_learners(self, lab: str, limit: int = 5) -> list[dict]:
+        """Fetch top N learners for a specific lab.
+
+        Args:
+            lab: The lab identifier (e.g., "lab-04")
+            limit: Number of top learners to return
+
+        Returns:
+            List of top learner dictionaries
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/analytics/top-learners"
+        params = {"lab": lab, "limit": limit}
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
+    def get_completion_rate(self, lab: str) -> dict:
+        """Fetch completion rate for a specific lab.
+
+        Args:
+            lab: The lab identifier (e.g., "lab-04")
+
+        Returns:
+            Completion rate dictionary
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/analytics/completion-rate"
+        params = {"lab": lab}
+        with httpx.Client() as client:
+            response = client.get(url, headers=self._get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+
+    def trigger_sync(self) -> dict:
+        """Trigger a data sync from the autochecker.
+
+        Returns:
+            Sync result dictionary
+
+        Raises:
+            httpx.RequestError: If the request fails
+        """
+        url = f"{self.base_url}/pipeline/sync"
+        with httpx.Client() as client:
+            response = client.post(url, headers=self._get_headers())
             response.raise_for_status()
             return response.json()
 
