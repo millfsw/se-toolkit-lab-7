@@ -69,19 +69,20 @@ def run_command(command: str, args: str) -> str:
 
 def run_test_mode(query: str) -> None:
     """Run a command in test mode (no Telegram connection).
-    
+
     Args:
         query: The command or text to test (e.g., "/start" or "what labs are available")
     """
     command, args = parse_command(query)
-    
+
     if command:
         # Slash command
         response = run_command(command, args)
     else:
-        # Plain text query (Task 3 - will use LLM)
-        response = f"Plain text query: '{args}' - LLM routing coming in Task 3"
-    
+        # Plain text query - use LLM intent router
+        from services.intent_router import route
+        response = route(args)
+
     print(response)
 
 

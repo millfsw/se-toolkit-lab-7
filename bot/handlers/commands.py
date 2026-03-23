@@ -17,7 +17,21 @@ from services.api_client import lms_client, format_error_message
 
 def handle_start() -> str:
     """Handle /start command - welcome message."""
-    return "Welcome to the LMS Bot! I can help you check system health, browse labs, view scores, and answer questions. Use /help to see all available commands."
+    return """Welcome to the LMS Bot! 👋
+
+I'm your assistant for the Learning Management System. I can help you:
+• Check system health and browse available labs
+• View scores, pass rates, and completion statistics
+• Analyze group and individual learner performance
+• Track submission timelines
+• Answer questions in plain language!
+
+Use the buttons below to quickly access common features, or just ask me a question like:
+• "What labs are available?"
+• "Which lab has the lowest pass rate?"
+• "Show me the top 5 students in lab 4"
+
+Use /help to see all available commands."""
 
 
 def handle_help() -> str:
