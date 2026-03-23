@@ -5,14 +5,20 @@ Loads settings from .env.bot.secret using pydantic-settings.
 This provides type safety and validation for all configuration values.
 """
 
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Path to the .env.bot.secret file (in the project root, one level up from bot/)
+_BASE_DIR = Path(__file__).parent.parent
+_ENV_FILE = _BASE_DIR / ".env.bot.secret"
 
 
 class BotSettings(BaseSettings):
     """Bot configuration loaded from environment variables."""
 
     model_config = SettingsConfigDict(
-        env_file=".env.bot.secret",
+        env_file=str(_ENV_FILE),
         env_file_encoding="utf-8",
         extra="ignore",
     )
